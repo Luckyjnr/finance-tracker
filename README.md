@@ -1,23 +1,25 @@
 
-# Finance Tracker API
+# 📌 Finance Tracker API
 
-## Description
-The **Finance Tracker API** is a backend service that helps users manage their finances by tracking income, expenses, and account balances.  
-It provides secure user authentication, transaction management, and financial summaries using RESTful API endpoints.
+## 📖 Description
 
----
-
-## Features
-- User authentication with JWT.
-- Secure password hashing with bcrypt.
-- Track user account balance (default balance = 0).
-- CRUD operations for income and expense transactions.
-- Filter transactions by category or date.
-- Error handling and input validation.
+The **Finance Tracker API** is a backend service that helps users **manage their finances** by tracking **income, expenses, and account balances**.
+It provides **secure user authentication, transaction management, and financial summaries** via RESTful API endpoints.
 
 ---
 
-## Installation & Setup
+## 🚀 Features
+
+* 🔐 User authentication with JWT.
+* 🔑 Secure password hashing with **bcrypt**.
+* 💰 Track user account balance (**default balance = 0**).
+* 📊 CRUD operations for income and expense transactions.
+* 📅 Filter transactions by **category** or **date**.
+* ⚡ Error handling and input validation.
+
+---
+
+## 🛠️ Installation & Setup
 
 ```bash
 # Clone repository
@@ -37,10 +39,11 @@ JWT_SECRET=your_secret_key
 # Start the app
 npm run dev   # development (nodemon)
 npm start     # production
-````
+```
 
+---
 
-## Technologies Used
+## 🏗️ Technologies Used
 
 * **Node.js** – JavaScript runtime.
 * **Express.js** – Backend framework.
@@ -49,14 +52,54 @@ npm start     # production
 * **Bcrypt.js** – Password hashing.
 * **Dotenv** – Environment variables.
 
-## API Endpoints
+---
 
-### **Auth Routes**
+## 📡 API Endpoints
 
-* `POST /api/auth/register` – Register a new user.
-* `POST /api/auth/login` – Login user & get JWT.
+### 🔑 Auth Routes
 
+| Method | Endpoint             | Description          | Auth Required |
+| ------ | -------------------- | -------------------- | ------------- |
+| POST   | `/api/auth/register` | Register a new user  | ❌             |
+| POST   | `/api/auth/login`    | Login user & get JWT | ❌             |
 
-## Author
+---
+
+### 💳 Transaction Routes
+
+| Method | Endpoint                | Description                             | Auth Required |
+| ------ | ----------------------- | --------------------------------------- | ------------- |
+| GET    | `/api/transactions`     | Get all transactions for logged-in user | ✅                         |
+| POST   | `/api/transactions`     | Add new transaction (income/expense)    | ✅             |
+| PUT    | `/api/transactions/:id` | Update an existing transaction by ID    | ✅             |
+| DELETE | `/api/transactions/:id` | Delete a transaction by ID              | ✅             |
+
+---
+
+## 🔒 Authentication
+
+* Authentication is handled via **JWT tokens**.
+* To access protected routes, include the token in headers:
+
+```http
+Authorization: Bearer <your_jwt_token>
+```
+
+---
+
+## 📌 Example Transaction Object
+
+```json
+{
+  "type": "income", 
+  "amount": 500,
+  "category": "salary",
+  "description": "August salary"
+}
+```
+
+---
+
+## 👤 Author
 
 **Noah Lucky**
