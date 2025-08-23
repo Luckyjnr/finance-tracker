@@ -10,6 +10,14 @@ exports.createTransaction = async (req, res) => {
       return res.status(400).json({ message: "Amount and type are required" });
     }
 
+    if (amount <= 0) {
+      return res.status(400).json({ message: "Amount must be greater than 0" });
+    }
+
+    if (!["credit", "debit"].includes(type)) {
+      return res.status(400).json({ message: "Type must be either 'credit' or 'debit'" });
+    }
+
     const transaction = await Transaction.create({
       user: req.user._id,
       amount,
@@ -19,7 +27,7 @@ exports.createTransaction = async (req, res) => {
 
     // Update balance
     const user = await User.findById(req.user._id);
-    user.balance += type === "income" ? amount : -amount;
+    user.balance += type === "credit" ? amount : -amount;
     await user.save();
 
     res.status(201).json(transaction);
@@ -81,7 +89,7 @@ exports.updateTransaction = async (req, res) => {
     const user = await User.findById(req.user._id);
 
     // Reverse old effect
-    user.balance -= tx.type === "income" ? tx.amount : -tx.amount;
+    user.balance -= tx.type === "credit" ? tx.amount : -tx.amount;
 
     // Apply new values
     tx.amount = amount ?? tx.amount;
@@ -89,7 +97,7 @@ exports.updateTransaction = async (req, res) => {
     tx.description = description ?? tx.description;
 
     // Apply new effect
-    user.balance += tx.type === "income" ? tx.amount : -tx.amount;
+    user.balance += tx.type === "credit" ? tx.amount : -tx.amount;
 
     await tx.save();
     await user.save();
@@ -109,7 +117,7 @@ exports.deleteTransaction = async (req, res) => {
     const user = await User.findById(req.user._id);
 
     // Reverse effect
-    user.balance -= tx.type === "income" ? tx.amount : -tx.amount;
+    user.balance -= tx.type === "credit" ? tx.amount : -tx.amount;
 
     await tx.deleteOne();
     await user.save();
