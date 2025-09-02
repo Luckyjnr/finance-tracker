@@ -1,18 +1,22 @@
 const express = require("express");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
+const cors = require("cors");   // 👈 add this
 
 const app = express();
 
 // Core middleware
 app.use(express.json());
 
+// Enable CORS
+app.use(cors());   // 👈 allow frontend to talk to backend
+
 // Security middlewares
 app.use(helmet());
 app.use(
   rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100,                 // limit each IP to 100 requests per window
+    max: 100,
     standardHeaders: true,
     legacyHeaders: false,
   })
