@@ -1,21 +1,25 @@
 const express = require("express");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
-const cors = require("cors");   // 👈 add this
+const cors = require("cors");  // 👈 add this
 
 const app = express();
 
+// Enable CORS for your frontend
+app.use(cors({
+  origin: "https://finance-tracker-kappa-tan.vercel.app", // allow only your frontend
+  methods: ["GET", "POST", "PUT", "DELETE"],               // allowed methods
+  credentials: true                                        // if you use cookies/auth
+}));
+
 // Core middleware
 app.use(express.json());
-
-// Enable CORS
-app.use(cors());   // 👈 allow frontend to talk to backend
 
 // Security middlewares
 app.use(helmet());
 app.use(
   rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
+    windowMs: 15 * 60 * 1000,
     max: 100,
     standardHeaders: true,
     legacyHeaders: false,
